@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(VISITOR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  WORKER
+  VISITOR
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  VISITOR
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Member {
+  id          String       @id @default(uuid())
+  firstName   String
+  lastName    String
+  email       String?
+  phone       String?
+  address     String?
+  dob         DateTime?
+  gender      Gender?
+  status      MemberStatus @default(VISITOR)
+  joinDate    DateTime     @default(now())
+  photoUrl    String?
+  
+  ministries  Ministry[]
+  cellGroup   CellGroup?   @relation("MemberCellGroup", fields: [cellGroupId], references: [id])
+  cellGroupId String?
+
+  family      Family?      @relation(fields: [familyId], references: [id])
+  familyId    String?
+
+  ledCellGroups CellGroup[] @relation("CellGroupLeader")
+  registrations EventRegistration[]
+  attendance    Attendance[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Ministry {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  members     Member[]
+}
+
+model CellGroup {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  
+  leader      Member?  @relation("CellGroupLeader", fields: [leaderId], references: [id])
+  leaderId    String?
+
+  members     Member[] @relation("MemberCellGroup")
+}
+
+model Family {
+  id        String   @id @default(uuid())
+  name      String
+  members   Member[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  isRecurring Boolean  @default(false)
+  dayOfWeek   Int?     // 0 = Sunday, 1 = Monday, etc.
+  startTime   String?  // e.g. "10:00"
+  location    String?
+  type        EventType @default(SERVICE)
+  
+  registrations EventRegistration[]
+  attendance    Attendance[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EventRegistration {
+  id        String   @id @default(uuid())
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+  
+  member    Member?  @relation(fields: [memberId], references: [id])
+  memberId  String?
+  
+  guestName String?
+  status    RegistrationStatus @default(REGISTERED)
+
+  createdAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  event     Event    @relation(fields: [eventId], references: [id])
+  eventId   String
+  
+  member    Member   @relation(fields: [memberId], references: [id])
+  memberId  String
+  
+  date      DateTime
+  status    RegistrationStatus @default(ATTENDED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EventType {
+  SERVICE
+  PRAYER_MEETING
+  CELL_GROUP
+  FELLOWSHIP
+  OUTREACH
+  SPECIAL
+  OTHER
+}
+
+enum RegistrationStatus {
+  REGISTERED
+  ATTENDED
+  CANCELLED
+}
