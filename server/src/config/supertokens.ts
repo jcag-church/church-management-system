@@ -15,9 +15,9 @@ export function initSuperTokens() {
     },
     appInfo: {
       appName: "Church Management System",
-      apiDomain: "http://localhost:3000",
-      websiteDomain: "http://localhost:5173",
-      apiBasePath: "/auth",
+      apiDomain: process.env.API_DOMAIN || "http://localhost:3000",
+      websiteDomain: process.env.WEBSITE_DOMAIN || "http://localhost:5173",
+      apiBasePath: "/api/auth",
       websiteBasePath: "/auth",
     },
     recipeList: [

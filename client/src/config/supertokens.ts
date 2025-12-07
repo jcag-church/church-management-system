@@ -6,9 +6,9 @@ export function initSuperTokens() {
   SuperTokens.init({
     appInfo: {
       appName: "Church Management System",
-      apiDomain: "http://localhost:3000",
-      websiteDomain: "http://localhost:5173",
-      apiBasePath: "/auth",
+      apiDomain: import.meta.env.VITE_API_DOMAIN || "http://localhost:3000",
+      websiteDomain: import.meta.env.VITE_WEBSITE_DOMAIN || "http://localhost:5173",
+      apiBasePath: "/api/auth",
       websiteBasePath: "/auth",
     },
     recipeList: [

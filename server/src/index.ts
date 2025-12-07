@@ -32,7 +32,7 @@ const port = process.env.PORT || 3000;
 // Security Middleware
 app.use(helmet());
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: [process.env.WEBSITE_DOMAIN || "http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
   allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
   credentials: true,
 }));
