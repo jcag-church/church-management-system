@@ -25,6 +25,7 @@ import { VisitorDashboard } from './pages/dashboard/visitor';
 import { UsersPage } from './pages/admin/users';
 import { FamiliesPage } from './pages/admin/families';
 import { CellGroupsPage } from './pages/admin/cellgroups';
+import { MinistriesPage } from './pages/admin/ministries';
 import ReportsDashboard from './pages/reports';
 import { Layout } from './components/layout';
 import LandingPage from './pages/landing';
@@ -137,7 +138,12 @@ function App() {
                   <CellGroupsPage />
                 </SessionAuth>
               } />
-              <Route path="/reports" element={
+                <Route path="/ministries" element={
+                <SessionAuth>
+                  <MinistriesPage />
+                </SessionAuth>
+              } />
+               <Route path="/reports" element={
                 <SessionAuth>
                   <ReportsDashboard />
                 </SessionAuth>

@@ -31,6 +31,9 @@ export function AdminDashboard() {
             <Link to="/cellgroups">
               <Button variant="outline" className="w-full">Manage Cell Groups</Button>
             </Link>
+            <Link to="/ministries">
+              <Button variant="outline" className="w-full">Manage Ministries</Button>
+            </Link>
           </div>
         </DashboardCard>
 

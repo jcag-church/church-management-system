@@ -67,6 +67,7 @@ import userRoutes from './routes/user.routes';
 import attendanceRoutes from './routes/attendance.routes';
 import familyRoutes from './routes/family.routes';
 import cellGroupRoutes from './routes/cellgroup.routes';
+import ministryRoutes from './routes/ministry.routes';
 
 // API Routes
 import reportsRoutes from './routes/reports.routes';
@@ -77,6 +78,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/families', familyRoutes);
 app.use('/api/cellgroups', cellGroupRoutes);
+app.use('/api/ministries', ministryRoutes);
 app.use('/api/reports', reportsRoutes);
 
 // SuperTokens Error Handler
