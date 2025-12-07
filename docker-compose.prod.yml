@@ -62,8 +62,6 @@ services:
     image: nginx:alpine
     container_name: church_cms_gateway
     restart: always
-    ports:
-      - "80:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -80,3 +78,6 @@ services:
 volumes:
   postgres_data:
 
+networks:
+  proxy:
+    external: true
