@@ -23,6 +23,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgres://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-church_cms}?schema=public
     container_name: church_cms_server
     restart: always
     environment:

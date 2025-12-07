@@ -37,7 +37,7 @@ export const getAttendanceMetrics = async (req: Request, res: Response) => {
     
     // Calculate average per session
     // We need to know how many unique sessions (event + date) occurred
-    const uniqueSessions = new Set(attendanceRecords.map(r => r.date.toISOString().split('T')[0])).size;
+    const uniqueSessions = new Set(attendanceRecords.map((r: { date: Date }) => r.date.toISOString().split('T')[0])).size;
     const averageAttendance = uniqueSessions > 0 ? Math.round(totalAttendance / uniqueSessions) : 0;
 
     // Chart Data Aggregation
@@ -51,7 +51,7 @@ export const getAttendanceMetrics = async (req: Request, res: Response) => {
       });
       
       const counts = new Array(12).fill(0);
-      attendanceRecords.forEach(record => {
+      attendanceRecords.forEach((record: { date: Date }) => {
         const monthIndex = record.date.getMonth();
         counts[monthIndex]++;
       });
@@ -63,7 +63,7 @@ export const getAttendanceMetrics = async (req: Request, res: Response) => {
       const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
       const counts = new Array(4).fill(0);
 
-      attendanceRecords.forEach(record => {
+      attendanceRecords.forEach((record: { date: Date }) => {
         const month = record.date.getMonth();
         const quarterIndex = Math.floor(month / 3);
         counts[quarterIndex]++;

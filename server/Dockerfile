@@ -9,6 +9,11 @@ RUN npm ci
 
 COPY . .
 
+# Generate Prisma Client for build
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+RUN npx prisma generate
+
 RUN npm run build
 
 FROM node:20-alpine

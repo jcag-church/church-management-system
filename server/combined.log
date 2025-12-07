@@ -19,3 +19,7 @@
 {"level":"info","message":"::1 - - [07/Dec/2025:20:15:56 +0000] \"GET /api/users/me HTTP/1.1\" 304 - \"http://localhost:5173/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36\"","timestamp":"2025-12-07T20:15:56.377Z"}
 {"level":"info","message":".env file loaded successfully","timestamp":"2025-12-07T20:15:59.916Z"}
 {"level":"info","message":"Server is running on port 3000","timestamp":"2025-12-07T20:16:00.588Z"}
+{"level":"info","message":".env file loaded successfully","timestamp":"2025-12-07T23:20:02.486Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-12-07T23:20:03.326Z"}
+{"level":"info","message":".env file loaded successfully","timestamp":"2025-12-07T23:20:09.985Z"}
+{"level":"info","message":"Server is running on port 3000","timestamp":"2025-12-07T23:20:10.833Z"}

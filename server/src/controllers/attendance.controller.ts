@@ -132,15 +132,15 @@ export const getAttendanceSummary = async (req: Request, res: Response) => {
       },
     });
 
-    const eventIds = [...new Set(summary.map(s => s.eventId))];
+    const eventIds = [...new Set(summary.map((s: any) => s.eventId))];
     const events = await prisma.event.findMany({
       where: { id: { in: eventIds } },
       select: { id: true, name: true },
     });
 
-    const eventMap = new Map(events.map(e => [e.id, e.name]));
+    const eventMap = new Map(events.map((e: { id: string; name: string }) => [e.id, e.name]));
 
-    const result = summary.map(s => ({
+    const result = summary.map((s: any) => ({
       eventId: s.eventId,
       eventName: eventMap.get(s.eventId) || 'Unknown Event',
       date: s.date,
@@ -169,7 +169,7 @@ export const getAttendanceDates = async (req: Request, res: Response) => {
       orderBy: { date: 'desc' },
     });
 
-    res.json(dates.map(d => d.date));
+    res.json(dates.map((d: { date: Date }) => d.date));
   } catch (error) {
     console.error('Error fetching attendance dates:', error);
     res.status(500).json({ message: 'Internal server error' });
