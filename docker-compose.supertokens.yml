@@ -7,8 +7,11 @@ services:
     restart: always
     environment:
       # Connects to the postgres container in the other stack via its container name 'church_cms_db'
-      POSTGRESQL_CONNECTION_URI: "postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password}@church_cms_db:5432/supertokens"
-      API_KEYS: ${SUPERTOKENS_API_KEY}
+      POSTGRESQL_HOST: church_cms_db
+      POSTGRESQL_PORT: "5432"
+      POSTGRESQL_USER: "${POSTGRES_USER:-admin}"
+      POSTGRESQL_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+      POSTGRESQL_DATABASE_NAME: supertokens
     networks:
       - proxy
     healthcheck:
@@ -19,7 +22,7 @@ services:
       retries: 5
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.supertokens.rule=Host(`supertokens.hows-tine.com`)"
+      - "traefik.http.routers.supertokens.rule=Host(`supertokens.hows-tine.com`) || Host(`supertokens.localhost`)"
       - "traefik.http.routers.supertokens.entrypoints=web"
       - "traefik.http.services.supertokens.loadbalancer.server.port=3567"
 
