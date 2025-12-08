@@ -35,8 +35,8 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       # Domain Configuration
-      API_DOMAIN: ${API_DOMAIN:-http://localhost}
-      WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-http://localhost}
+      API_DOMAIN: ${API_DOMAIN:-https://staging-connect.hows-tine.com}
+      WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-https://staging-connect.hows-tine.com}
     depends_on:
       postgres:
         condition: service_healthy
@@ -51,8 +51,8 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-/api}
-        VITE_API_DOMAIN: ${API_DOMAIN:-http://localhost}
-        VITE_WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-http://localhost}
+        VITE_API_DOMAIN: ${API_DOMAIN:-https://staging-connect.hows-tine.com}
+        VITE_WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-https://staging-connect.hows-tine.com}
     container_name: church_cms_client
     restart: always
     networks:
