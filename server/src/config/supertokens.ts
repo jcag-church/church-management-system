@@ -15,8 +15,8 @@ export function initSuperTokens() {
     },
     appInfo: {
       appName: "Church Management System",
-      apiDomain: process.env.API_DOMAIN || "http://localhost:3000",
-      websiteDomain: process.env.WEBSITE_DOMAIN || "http://localhost:5173",
+      apiDomain: process.env.API_DOMAIN || "https://staging-connect.hows-tine.com",
+      websiteDomain: process.env.WEBSITE_DOMAIN || "https://staging-connect.hows-tine.com",
       apiBasePath: "/api/auth",
       websiteBasePath: "/auth",
     },
