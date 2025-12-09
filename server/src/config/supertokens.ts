@@ -2,11 +2,9 @@ import supertokens from "supertokens-node";
 import Session from "supertokens-node/recipe/session";
 import Dashboard from "supertokens-node/recipe/dashboard";
 import ThirdParty from "supertokens-node/recipe/thirdparty";
+import UserRoles from "supertokens-node/recipe/userroles";
 
 export function initSuperTokens() {
-  console.log("Google Client ID loaded:", !!process.env.GOOGLE_CLIENT_ID);
-  console.log("Google Client Secret loaded:", !!process.env.GOOGLE_CLIENT_SECRET);
-  
   supertokens.init({
     framework: "express",
     supertokens: {
@@ -69,12 +67,15 @@ export function initSuperTokens() {
 
                     if (!existingUser) {
                       const email = emails[0];
+                      // Check if this email should be an admin
+                      const isAdmin = email === process.env.ADMIN_EMAIL;
+                      
                       const newUser = await prisma.user.create({
                         data: {
                           id,
                           email,
                           name: email.split('@')[0],
-                          role: 'VISITOR',
+                          role: isAdmin ? 'ADMIN' : 'VISITOR',
                         },
                       });
                     }
@@ -91,7 +92,8 @@ export function initSuperTokens() {
         },
       }),
       Session.init(),
-      Dashboard.init(),
+      UserRoles.init(),
+      Dashboard.init({ apiKey: process.env.SUPERTOKENS_DASHBOARD_API_KEY, admins: [process.env.ADMIN_EMAIL || ""] }),
     ],
   });
 }

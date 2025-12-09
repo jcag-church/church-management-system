@@ -33,6 +33,8 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-church_cms}?schema=public
       SUPERTOKENS_CONNECTION_URI: http://supertokens:3567
       SUPERTOKENS_API_KEY: ${SUPERTOKENS_API_KEY}
+      SUPERTOKENS_DASHBOARD_API_KEY: ${SUPERTOKENS_DASHBOARD_API_KEY}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-nearbyjustine@gmail.com}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       # Domain Configuration
