@@ -6,8 +6,8 @@ export function initSuperTokens() {
   SuperTokens.init({
     appInfo: {
       appName: "Church Management System",
-      apiDomain: import.meta.env.VITE_API_DOMAIN || "http://localhost:3000",
-      websiteDomain: import.meta.env.VITE_WEBSITE_DOMAIN || "http://localhost:5173",
+      apiDomain: import.meta.env.VITE_API_DOMAIN || "https://staging-connect.hows-tine.com",
+      websiteDomain: import.meta.env.VITE_WEBSITE_DOMAIN || "https://staging-connect.hows-tine.com",
       apiBasePath: "/api/auth",
       websiteBasePath: "/auth",
     },

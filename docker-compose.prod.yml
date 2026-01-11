@@ -11,8 +11,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-church_cms}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d
     networks:
-      - app_network
+      - proxy
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin}"]
       interval: 5s
@@ -30,20 +31,22 @@ services:
     environment:
       PORT: 3000
       DATABASE_URL: postgres://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password}@postgres:5432/${POSTGRES_DB:-church_cms}?schema=public
-      SUPERTOKENS_CONNECTION_URI: ${SUPERTOKENS_CONNECTION_URI}
+      SUPERTOKENS_CONNECTION_URI: http://supertokens:3567
       SUPERTOKENS_API_KEY: ${SUPERTOKENS_API_KEY}
+      SUPERTOKENS_DASHBOARD_API_KEY: ${SUPERTOKENS_DASHBOARD_API_KEY}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-nearbyjustine@gmail.com}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       # Domain Configuration
-      API_DOMAIN: ${API_DOMAIN:-http://localhost}
-      WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-http://localhost}
+      API_DOMAIN: ${API_DOMAIN:-https://staging-connect.hows-tine.com}
+      WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-https://staging-connect.hows-tine.com}
     depends_on:
       postgres:
         condition: service_healthy
     command: >
       sh -c "npx prisma migrate deploy && npm start"
     networks:
-      - app_network
+      - proxy
 
   client:
     build:
@@ -51,30 +54,33 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_URL: ${VITE_API_URL:-/api}
-        VITE_API_DOMAIN: ${API_DOMAIN:-http://localhost}
-        VITE_WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-http://localhost}
+        VITE_API_DOMAIN: ${API_DOMAIN:-https://staging-connect.hows-tine.com}
+        VITE_WEBSITE_DOMAIN: ${WEBSITE_DOMAIN:-https://staging-connect.hows-tine.com}
     container_name: church_cms_client
     restart: always
     networks:
-      - app_network
+      - proxy
 
   nginx:
     image: nginx:alpine
     container_name: church_cms_gateway
     restart: always
-    ports:
-      - "80:80"
     volumes:
       - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - server
       - client
     networks:
-      - app_network
+      - proxy
+    labels:  
+      - "traefik.enable=true" 
+      - "traefik.http.routers.staging-connect.rule=Host(`staging-connect.localhost`) || Host(`staging-connect.hows-tine.com`)"
+      - "traefik.http.routers.staging-connect.entrypoints=web"
+      - "traefik.http.services.staging-connect.loadbalancer.server.port=80"
 
 volumes:
   postgres_data:
 
 networks:
-  app_network:
-    driver: bridge
+  proxy:
+    external: true

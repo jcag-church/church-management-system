@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:latest
+    container_name: church_cms_supertokens
+    restart: always
+    environment:
+      # Connects to the postgres container in the other stack via its container name 'church_cms_db'
+      POSTGRESQL_HOST: church_cms_db
+      POSTGRESQL_PORT: "5432"
+      POSTGRESQL_USER: "${POSTGRES_USER:-admin}"
+      POSTGRESQL_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+      POSTGRESQL_DATABASE_NAME: supertokens
+    networks:
+      proxy:
+        aliases:
+          - supertokens
+    healthcheck:
+      test: >
+        bash -c 'exec 3<>/dev/tcp/127.0.0.1/3567 && echo -e "GET /hello HTTP/1.1\r\nhost: 127.0.0.1:3567\r\nConnection: close\r\n\r\n" >&3 && cat <&3 | grep "Hello"'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.supertokens.rule=Host(`supertokens.hows-tine.com`) || Host(`supertokens.localhost`)"
+      - "traefik.http.routers.supertokens.entrypoints=web"
+      - "traefik.http.services.supertokens.loadbalancer.server.port=3567"
+
+networks:
+  proxy:
+    external: true
